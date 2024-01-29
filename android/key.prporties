@@ -1,0 +1,4 @@
+storePassword=gt12345
+keyPassword=gt12345
+keyAlias=upload
+storeFile=C:\Users\GT\StudioProjects\gtsuvai\android\app\upload-keystore.jks
