@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:gtsuvai/Search.dart';
 import 'package:gtsuvai/apiHotelDescroption.dart';
 import 'package:gtsuvai/colors.dart';
+import 'package:gtsuvai/edithotel%20description.dart';
 import 'package:gtsuvai/page2.dart';
 import 'package:location/location.dart';
 import 'package:text_divider/text_divider.dart';
@@ -46,7 +47,7 @@ class _homeState extends State<home> {
     var datalist=jsonDecode(resp.body)["restaurantDtls"];
     return (datalist as List).map((e) => RestaurantDtls.fromJson(e)).toList();
   }
-var restindex=0;
+
   ///--------- restaurant id----------///
   Future<List<RestaurantDtlsById>> fetchrestaurantdetails() async {
     var resp= await http.get(Uri.parse("http://gtsuvai.gtcollege.in/Master/GetRestaurantDetailsById?restaurantId"));
@@ -59,6 +60,7 @@ var restindex=0;
     // TODO: implement initState
     super.initState();
     getRestaurant();
+
   }
 
   double star=0;
@@ -352,7 +354,7 @@ var restindex=0;
                                           children: [
                                             GestureDetector(
                                               onTap: (){
-                                                Navigator.push(context, MaterialPageRoute(builder: (context) => HotelDescriptionApi(
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => HotelDescriptionApiedit(
                                                     restaurantId: list[Index].restaurantId
 
                                                 ) ));
@@ -497,7 +499,8 @@ var restindex=0;
                                             Row(children: [
                                               Padding(
                                                 padding: const EdgeInsets.all(5.0),
-                                                child: Text("   Parking",style:TextStyle(fontSize:14,color: Colors.black,fontWeight: FontWeight.bold,fontFamily: "Outfit-SemiBold"),),
+                                                child: Text("   Parking",
+                                                  style:TextStyle(fontSize:14,color: Colors.black,fontWeight: FontWeight.bold,fontFamily: "Outfit-SemiBold"),),
                                               ),
 
                                               Padding(
