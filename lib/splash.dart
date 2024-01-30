@@ -2,6 +2,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:gtsuvai/Page1.dart';
+import 'package:gtsuvai/apihome.dart';
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
 
@@ -23,7 +24,7 @@ class _SplashState extends State<Splash> {
           image: DecorationImage(image: AssetImage("assets/img/splash1.gif"),fit: BoxFit.fill),
         ),
       ),
-      nextScreen: const page1(),
+      nextScreen:  home(),
       splashTransition: SplashTransition.fadeTransition,
     );
   }
