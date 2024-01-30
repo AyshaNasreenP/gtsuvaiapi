@@ -17,6 +17,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
 import 'models/eachrestaurant.dart';
+import 'models/offer.dart';
 import 'models/restaurant.dart';
 
 
@@ -47,19 +48,27 @@ class _homeState extends State<home> {
     var datalist=jsonDecode(resp.body)["restaurantDtls"];
     return (datalist as List).map((e) => RestaurantDtls.fromJson(e)).toList();
   }
+///By each rest id
+  // ///--------- restaurant id----------///
+  // Future<List<RestaurantDtlsById>> fetchrestaurantdetails() async {
+  //   var resp= await http.get(Uri.parse("http://gtsuvai.gtcollege.in/Master/GetRestaurantDetailsById?restaurantId"));
+  //   var datalist=jsonDecode(resp.body)["restaurantDtlsById"];
+  //   return (datalist as List).map((e)=>RestaurantDtlsById.fromJson(e)).toList();
+  //
+  // }
 
-  ///--------- restaurant id----------///
-  Future<List<RestaurantDtlsById>> fetchrestaurantdetails() async {
-    var resp= await http.get(Uri.parse("http://gtsuvai.gtcollege.in/Master/GetRestaurantDetailsById?restaurantId"));
-    var datalist=jsonDecode(resp.body)["restaurantDtlsById"];
-    return (datalist as List).map((e)=>RestaurantDtlsById.fromJson(e)).toList();
-
+  ///Offer api
+  Future<List<OfferDtls>> getoffer() async{
+    var resp=await http.get(Uri.parse("http://gtsuvai.gtcollege.in/Offer/GetOffer"));
+    var offerlist=jsonDecode(resp.body)["offerDtls"];
+    return (offerlist as List).map((offer) => OfferDtls.fromJson(offer)).toList();
   }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getRestaurant();
+    getoffer();
 
   }
 
@@ -167,51 +176,66 @@ class _homeState extends State<home> {
                     ],
                   ),
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height*.18,
-                  width: MediaQuery.of(context).size.width*1,
-                  child:
-                  CarouselSlider.builder(
-                    options: CarouselOptions(
-                      height: MediaQuery.of(context).size.height*.16,
-                      aspectRatio: 16/9,
-                      viewportFraction: 0.8,
-                      initialPage: 0,
-                      enableInfiniteScroll: true,
-                      reverse: false,
-                      autoPlay: true,
-                      autoPlayInterval: Duration(seconds: 3),
-                      autoPlayAnimationDuration: Duration(milliseconds: 800),
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enlargeCenterPage: true,
-                      scrollDirection: Axis.horizontal,
-                    ), itemCount:Offer_details.length ,
-                    itemBuilder: (BuildContext context, int index, int realIndex) {
-                      return
-                        Container(
-                          height: MediaQuery.of(context).size.height*.25,
-                          width: MediaQuery.of(context).size.width*1,
-                          decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                    color: gtgreen,
-                                    spreadRadius: 1,
-                                    blurRadius: 3,
-                                    offset: Offset(0, 5)
-                                )
-                              ],
-                              borderRadius: BorderRadius.circular(25),
-                              image: DecorationImage(
+                FutureBuilder(
+                  future: getoffer(),
+                  builder: ( context,snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    } else if (!snapshot.hasData || snapshot.data == null) {
+                      return Text('No data available');
+                    }
 
-                                  image:AssetImage(Offer_details[index].image),fit: BoxFit.fill
-                              )
-                          ),
+                    return Container(
+                      height: MediaQuery.of(context).size.height*.18,
+                      width: MediaQuery.of(context).size.width*1,
+                      child:
+                      CarouselSlider.builder(
+                        options: CarouselOptions(
+                          height: MediaQuery.of(context).size.height*.16,
+                          aspectRatio: 16/9,
+                          viewportFraction: 0.8,
+                          initialPage: 0,
+                          enableInfiniteScroll: true,
+                          reverse: false,
+                          autoPlay: true,
+                          autoPlayInterval: Duration(seconds: 3),
+                          autoPlayAnimationDuration: Duration(milliseconds: 800),
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          enlargeCenterPage: true,
+                          scrollDirection: Axis.horizontal,
+                        ), itemCount:Offer_details.length ,
+                        itemBuilder: (BuildContext context, int index, int realIndex) {
+                          return
+                            Container(
+                              height: MediaQuery.of(context).size.height*.25,
+                              width: MediaQuery.of(context).size.width*1,
+                              decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: gtgreen,
+                                        spreadRadius: 1,
+                                        blurRadius: 3,
+                                        offset: Offset(0, 5)
+                                    )
+                                  ],
+                                  borderRadius: BorderRadius.circular(25),
+                                  image: DecorationImage(
 
-                        );
-                    },
+                                      image:NetworkImage(Offer_details[index].image),fit: BoxFit.fill
+                                  )
+                              ),
+
+                            );
+                        },
 
 
-                  ),),
+                      ),);
+                  },
+
+
+                ),
 
                 // Budget
                 TextDivider(text: Text("Budget",style: dividertext,),thickness: 1,),
