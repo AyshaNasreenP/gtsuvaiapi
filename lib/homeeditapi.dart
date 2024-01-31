@@ -15,6 +15,7 @@ import 'package:text_divider/text_divider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
+import 'edithotel description.dart';
 import 'models/restaurant.dart';
 
 
@@ -344,7 +345,7 @@ class _homeeditState extends State<homeedit> {
                                           children: [
                                             GestureDetector(
                                               onTap: (){
-                                                Navigator.push(context, MaterialPageRoute(builder: (context) => HotelDescriptionApi(
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => HotelDescriptionApiedit(
                                                     restaurantId: list[Index].restaurantId
 
                                                 ) ));

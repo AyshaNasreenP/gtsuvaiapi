@@ -186,6 +186,7 @@ class _homeState extends State<home> {
                     } else if (!snapshot.hasData || snapshot.data == null) {
                       return Text('No data available');
                     }
+                    List<OfferDtls> list = snapshot.data!;
 
                     return Container(
                       height: MediaQuery.of(context).size.height*.18,
@@ -205,7 +206,7 @@ class _homeState extends State<home> {
                           autoPlayCurve: Curves.fastOutSlowIn,
                           enlargeCenterPage: true,
                           scrollDirection: Axis.horizontal,
-                        ), itemCount:Offer_details.length ,
+                        ), itemCount:list.length ,
                         itemBuilder: (BuildContext context, int index, int realIndex) {
                           return
                             Container(
@@ -223,7 +224,7 @@ class _homeState extends State<home> {
                                   borderRadius: BorderRadius.circular(25),
                                   image: DecorationImage(
 
-                                      image:NetworkImage(Offer_details[index].image),fit: BoxFit.fill
+                                      image:NetworkImage("http://gtsuvai.gtcollege.in/"+"${list[index].offerImage.toString()}"),fit: BoxFit.fill
                                   )
                               ),
 
@@ -425,7 +426,7 @@ class _homeState extends State<home> {
                                                   ),
                                                   Container(alignment: Alignment.center,
                                                     height: 26,width: 200,
-                                                    child: Text(list[Index].restaurantName.toString(),
+                                                    child: Text(list[Index].type.toString(),
                                                       style: TextStyle(fontFamily: "Outfit-SemiBold",
                                                         color: Colors.white,
                                                         fontSize: 15,
@@ -443,7 +444,7 @@ class _homeState extends State<home> {
                                             ///place name in list view
                                             // Row(children: [
                                             //   Icon(Icons.location_on_outlined,color: gtgreen,),
-                                            //   Text(Similar[Index].place,
+                                            //   Text(snapshot.data![Index].shortAddress.toString(),
                                             //     style: GoogleFonts.openSans(
                                             //         color: Colors.black,
                                             //         fontSize: 14,fontWeight: FontWeight.bold
@@ -568,7 +569,7 @@ class _homeState extends State<home> {
                                             ],),
                                             GestureDetector(
                                               onTap: (){
-                                                _launchGoogleMapsDirections( 10.998440,76.976533); //
+                                                _launchGoogleMapsDirections( snapshot.data![Index].latitude!.toDouble(),snapshot.data![Index].longtitude!.toDouble()); //
                                               },
                                               child: Padding(
                                                 padding: const EdgeInsets.only(right: 10.0),
